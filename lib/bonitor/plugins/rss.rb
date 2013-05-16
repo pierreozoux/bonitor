@@ -15,10 +15,9 @@ class Rss
   listen_to :join, method: :on_join
 
   def on_join(m)
-    m.reply "Hello!"
-
     # check every 5min the rss feed and print the new item if needed
     if m.user.nick == bot.nick
+      m.reply "Hello!"
       while true do
         open(bot.config.plugins.rss["url"]) do |rss|
           feed = RSS::Parser.parse(rss, false)
