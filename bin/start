@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+
+require_relative "../lib/bonitor"
+
+def read_yaml(filepath)
+  if File.exists?(filepath)
+    YAML.load_file(filepath)
+  else
+    STDERR.puts("No configuration file found here #{filepath}")
+  end
+end
+
+bot = Cinch::Bot.new do
+  configure do |c|
+    filepath = File.join(ENV["HOME"], ".bonitor.yml")
+    config = read_yaml(filepath)
+
+    c.nick = config["nickname"]
+    c.server = config["server"]
+    c.channels = config["channels"]
+
+    # convert string to class
+    config["plugins"].each_with_index do |plugin, index|
+      config["plugins"][index] = Module::const_get(plugin)
+    end
+
+    c.plugins.plugins = config["plugins"]
+    
+    c.plugins.rss = config["Rss_config"]
+  end
+end
+
+bot.start

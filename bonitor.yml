@@ -1,0 +1,11 @@
+---
+nickname: "bonitor"
+server: "irc.freenode.net"
+channels: 
+- "#yourchannel"
+plugins: 
+- Rss
+Rss_config:
+ url: https://rpm.newrelic.com/account_feeds/yourKeyHere/events.rss
+ polling_period: 300
+ freshness: 24
